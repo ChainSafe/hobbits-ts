@@ -1,0 +1,27 @@
+{
+  "name": "hobbits-ts",
+  "version": "0.1.0",
+  "description": "A TypeScript implementation of the Hobbits Ethereum Wire Protocol.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChainSafeSystems/hobbits-ts.git"
+  },
+  "keywords": ["Ethereum", "Wire Protocol", "Networking", "Testing", "Future"],
+  "author": "ChainSafe System",
+  "license": "Apache 2.0 License",
+  "bugs": {
+    "url": "https://github.com/ChainSafeSystems/hobbits-ts/issues"
+  },
+  "homepage": "https://github.com/ChainSafeSystems/hobbits-ts#readme",
+  "devDependencies": {
+    "@types/node": "^11.11.4",
+    "typescript": "^3.3.4000"
+  }
+}
