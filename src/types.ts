@@ -1,6 +1,7 @@
 // Defines the types used in the EWP
 
 export interface request {
+    protocol: string;
     version: string;
     command: string;
     response_compression: string[];
