@@ -4,6 +4,7 @@ export interface request {
     protocol: string;
     version: string;
     command: string;
+    compression: string;
     response_compression: string[];
     head_only_indicator: boolean;
     headers: Buffer;
