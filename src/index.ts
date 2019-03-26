@@ -17,10 +17,13 @@ import {
 
 } from "./response_codes"
 
-function parseRequest(message: string) {
+export function parseRequest(message: string) {
     // TODO: Add appropriate error handling
-    let requestLine, payload = message.split("\n");
+    let requestLine = message.split("\n")[0];
+    let payload = message.split("\n")[1];
     let requestFields = requestLine.split(" ");
+    let headerLen = parseInt(requestLine[5]);
+    let bodyLen = parseInt(requestLine[6]);
 
     let request: Request = {
         protocol: requestFields[0],
@@ -29,14 +32,14 @@ function parseRequest(message: string) {
 	compression: requestFields[3],
 	response_compression: requestFields[4].split(","),
 	head_only_indicator: requestLine[7] === "H",
-	headers: Buffer.from(payload.splice(0, parseInt(requestLine[5]))),
-	body: Buffer.from(payload.splice(parseInt(requestLine[5]), parseInt(requestLine6) + parseInt(requestLine5))),
+	headers: payload.slice(0, headerLen),
+	body: payload.slice(headerLen)
 
      };
      return request;
 }
 
-function createRequestStr(request: Request) {
+export function createRequestStr(request: Request) {
     return request.protocol + " " + 
            request.version + " " +
            request.command + " " +
@@ -44,30 +47,33 @@ function createRequestStr(request: Request) {
            request.response_compression.toString() + " " +
 	   request.headers.length + " " + 
            request.body.length + "\n" +
-           request.headers.concat([request.body])
+           request.headers.concat(request.body)
 }
 
 
-function parseResponse(message: string) {
+export function parseResponse(message: string) {
     // TODO: Add appropriate error handling
-    let responseLine, payload = message.split("\n");
+    let responseLine = message.split("\n")[0];
+    let payload = message.split("\n")[1];
     let responseFields = responseLine.split(" ");
+    let headerLen = parseInt(responseLine[2]);
+    let bodyLen = parseInt(responseLine[3]);
 
     let response: Response = {
         code: parseInt(responseFields[0]),
 	compression: responseFields[1],
-	headers: payload.slice(0, parseInt(responseLine[2])),
-	body: payload.slice(parseInt(responseLine[2]), parseInt(responseLine[3]) + parseInt(responseLine[2])),
+	headers: payload.slice(0, headerLen),
+	body: payload.slice(headerLen)
     };
 
     return response;
 }
 
-function createResponseStr(response: Response) {
+export function createResponseStr(response: Response) {
     return response.code.toString() + " " +
            response.compression + " " +
            response.headers.length + " " +
 	   response.body.length + "\n" + 
-           response.headers.concat([response.body])
+           response.headers.concat(response.body)
 }
 
