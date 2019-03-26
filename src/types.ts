@@ -1,19 +1,19 @@
 // Defines the types used in the EWP
 
-export interface request {
+export interface Request {
     protocol: string;
     version: string;
     command: string;
     compression: string;
     response_compression: string[];
     head_only_indicator: boolean;
-    headers: Buffer;
-    body: Buffer;
+    headers: string;
+    body: string;
 }
 
-export interface response {
+export interface Response {
     code: number;
     compression: string;
-    headers: Buffer;
-    body: Buffer;
+    headers: string;
+    body: string;
 }
