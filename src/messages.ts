@@ -3,8 +3,10 @@ import {BeaconBlockRoot} from "./types";
 export interface RpcBody {
   method_id: number;
   id: 1;
-  body: any;
+  body: requests;
 }
+
+type requests = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBlockHeaders | BlockHeaders | GetBlockBodies | BlockBodies;
 
 // 0x00
 export interface Hello {
