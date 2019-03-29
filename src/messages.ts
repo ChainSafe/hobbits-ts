@@ -1,4 +1,4 @@
-import {BeaconBlockRoot} from "./types";
+import {BeaconBlockBody, BeaconBlockHeader, BeaconBlockRoot} from "./types";
 
 export interface RpcBody {
   method_id: number;
