@@ -14,3 +14,9 @@ export interface BeaconBlockBody {
 export interface Peer {
   uri: string;
 }
+
+export interface BeaconState {
+  latestFinalizedRoot: Buffer;
+  latestFinalizedEpoch: number;
+  latestFinalizedSlot: number;
+}
