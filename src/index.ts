@@ -45,17 +45,18 @@ export default class HobbitsP2PNetwork {
    * @param {string} ip
    */
   private connect = (ip: string) => {
-    // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
-    const peerOpts: PeerOpts = {
+    const peer: Peer = new Peer({
       ip,
-      port: this.port // Assume we follow protocol, all peers connect to the same ports
-    };
-    const peer: Peer = new Peer(peerOpts);
+      port: this.port
+    });
 
-    // Add peer to peers list
-    this.peers.push(peer);
-    // Send 0x00 Hello message
-    this.sendHello(peer)
+    const res: boolean = peer.connect();
+    if (res) {
+      // Add peer to peers list
+      this.peers.push(peer);
+      // Send 0x00 Hello message
+      this.sendHello(peer)
+    }
   };
 
   /**
