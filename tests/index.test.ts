@@ -1,9 +1,9 @@
 import {assert} from "chai";
 import net from "net";
-import HobbitsP2PNetwork, {HobbitsCtx} from "../src";
+import HobbitsP2PNetwork, {HobbitsOpts} from "../src";
 
 describe("P2P", () => {
-  const ctx: HobbitsCtx = {
+  const ctx: HobbitsOpts = {
     networkId: 1,
     chainId: 1,
     state: {
@@ -28,11 +28,5 @@ describe("P2P", () => {
       assert.isTrue(false)
     }
   });
-
-  // it("Should send hello", () => {
-  //   server2.start();
-  //   Todo figure out how to check if it said hello
-  // });
-
 });
 

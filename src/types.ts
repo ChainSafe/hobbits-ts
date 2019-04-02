@@ -13,11 +13,6 @@ export interface BeaconBlockBody {
   stub: number;
 }
 
-export interface Peer {
-  ip: string;
-  connection: net.Socket;
-}
-
 export interface BeaconState {
   latestFinalizedRoot: Buffer;
   latestFinalizedEpoch: number;
