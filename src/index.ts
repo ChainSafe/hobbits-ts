@@ -20,6 +20,10 @@ export default class HobbitsP2PNetwork {
   private state: BeaconState;
   private server: net.Server;
 
+  /**
+   * Constructor
+   * @param {HobbitsOpts} opts
+   */
   public constructor(opts: HobbitsOpts) {
     this.port = opts.port || 9000;
     this.networkId = opts.networkId;
@@ -72,7 +76,6 @@ export default class HobbitsP2PNetwork {
       best_root: this.state.latestFinalizedRoot,
       best_slot: this.state.latestFinalizedSlot
     };
-
     peer.connection.write(msg);
   };
 

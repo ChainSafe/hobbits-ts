@@ -10,11 +10,19 @@ export default class Peer {
   public port: number;
   public connection: net.Socket;
 
+  /**
+   * Constructor
+   * @param {PeerOpts} opts
+   */
   public constructor(opts: PeerOpts) {
     this.ip = opts.ip;
     this.port = opts.port;
   }
 
+  /**
+   * Establishes a connection to the peer.
+   * @returns {boolean}
+   */
   public connect = (): boolean => {
     // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
     try {
@@ -26,8 +34,11 @@ export default class Peer {
     }
   };
 
+  /**
+   * Destroys the connection to the peer.
+   * @returns {Promise<void>}
+   */
   public disconnect = async (): Promise<void> => {
     await this.connection.destroy()
   };
 }
-
