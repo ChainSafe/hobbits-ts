@@ -1,3 +1,5 @@
+import net from "net";
+
 export interface BeaconBlockRoot {
   block_root: Buffer;
   slot: number;
@@ -12,7 +14,8 @@ export interface BeaconBlockBody {
 }
 
 export interface Peer {
-  uri: string;
+  ip: string;
+  connection: net.Socket;
 }
 
 export interface BeaconState {
