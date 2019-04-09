@@ -58,8 +58,6 @@ export default class HobbitsP2PNetwork {
     if (res) {
       // Add peer to peers list
       this.peers.push(peer);
-      // Send 0x00 Hello message
-      this.sendHello(peer)
     }
   };
 
@@ -93,7 +91,9 @@ export default class HobbitsP2PNetwork {
 
     this.server.listen(this.port, () => {
       console.log("Server started!")
-    })
+    });
+
+    this.connectStaticPeers();
   };
 
   /**
