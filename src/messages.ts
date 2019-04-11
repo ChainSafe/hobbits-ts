@@ -10,12 +10,12 @@ type requests = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBl
 
 // 0x00
 export interface Hello {
-  network_id: number;
-  chain_id: number;
-  latest_finalized_root: Buffer;
-  latest_finalized_epoch: number;
-  best_root: Buffer;
-  best_slot: number;
+  networkId: number;
+  chainId: number;
+  latestFinalized_root: Buffer;
+  latestFinalized_epoch: number;
+  bestRoot: Buffer;
+  bestSlot: number;
 }
 
 // 0x01
@@ -26,14 +26,14 @@ export interface Goodbye {
 // 0x02
 export interface GetStatus {
   sha: Buffer;
-  user_agent: Buffer;
+  userAgent: Buffer;
   timestamp: number;
 }
 
 // 0x0A
 export interface GetBlockRoots {
-  start_root: Buffer;
-  start_slot: number;
+  startRoot: Buffer;
+  startSlot: number;
   max: number;
   skip: number;
   direction: number;
@@ -46,8 +46,8 @@ export interface BlockRoots {
 
 // 0x0C
 export interface GetBlockHeaders {
-  start_root: Buffer;
-  start_slot: number;
+  startRoot: Buffer;
+  startSlot: number;
   max: number;
   skip: number;
   direction: number;
@@ -60,8 +60,8 @@ export interface BlockHeaders {
 
 // 0x0E
 export interface GetBlockBodies {
-  start_root: Buffer;
-  start_slot: number;
+  startRoot: Buffer;
+  startSlot: number;
   max: number;
   skip: number;
   direction: number;

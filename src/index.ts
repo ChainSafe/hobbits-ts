@@ -74,6 +74,7 @@ export default class HobbitsP2PNetwork {
       best_root: this.state.latestFinalizedRoot,
       best_slot: this.state.latestFinalizedSlot
     };
+    // NOTE: Stubbed -- writin should probably be its own function
     peer.connection.write(msg);
   };
 
@@ -101,6 +102,6 @@ export default class HobbitsP2PNetwork {
    */
   public stop = async (): Promise<void> => {
     await this.server.close();
-    await this.peers.map(async (peer: Peer) => await peer.disconnect());
+    await Promise.all(this.peers.map((peer: Peer) => peer.disconnect());
   }
 }
