@@ -61,18 +61,29 @@ export default class HobbitsP2PNetwork {
     }
   };
 
+  private listenToPeers = () => {
+    this.peers.map((peer: Peer) => {
+
+      peer.on("hello", (data) => {
+        console.log(`Parent Received: ${data}`);
+      });
+
+      peer.start();
+    })
+  };
+
   /**
    * Sends 0x00 message "Hello"
    * @param peer
    */
   private sendHello = (peer) => {
     const msg: msgs.Hello = {
-      network_id: this.networkId,
-      chain_id: this.chainId,
-      latest_finalized_root: this.state.latestFinalizedRoot,
-      latest_finalized_epoch: this.state.latestFinalizedEpoch,
-      best_root: this.state.latestFinalizedRoot,
-      best_slot: this.state.latestFinalizedSlot
+      networkId: this.networkId,
+      chainId: this.chainId,
+      latestFinalizedRoot: this.state.latestFinalizedRoot,
+      latestFinalizedEpoch: this.state.latestFinalizedEpoch,
+      bestRoot: this.state.latestFinalizedRoot,
+      bestSlot: this.state.latestFinalizedSlot
     };
     // NOTE: Stubbed -- writin should probably be its own function
     peer.connection.write(msg);
@@ -95,6 +106,7 @@ export default class HobbitsP2PNetwork {
     });
 
     this.connectStaticPeers();
+    this.listenToPeers();
   };
 
   /**
@@ -102,6 +114,6 @@ export default class HobbitsP2PNetwork {
    */
   public stop = async (): Promise<void> => {
     await this.server.close();
-    await Promise.all(this.peers.map((peer: Peer) => peer.disconnect());
+    await Promise.all(this.peers.map((peer: Peer) => peer.disconnect()));
   }
 }

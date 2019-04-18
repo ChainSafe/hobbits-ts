@@ -29,7 +29,6 @@ export default class Peer extends EventEmitter {
     // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
     try {
       this.connection = net.createConnection({port: this.port});
-      this.start();
       return true;
     } catch (e) {
       console.log(`Error Connecting to static peer: ${this.ip}`);
@@ -40,7 +39,7 @@ export default class Peer extends EventEmitter {
   /**
    * Starts listening for incoming messages from the server
    */
-  private start = () => {
+  public start = () => {
     this.connection.on('data', (data) => {
       this.emit("new-data", data.toString());
       this.connection.end();
@@ -48,6 +47,7 @@ export default class Peer extends EventEmitter {
 
     this.connection.on('end', () => {
       this.emit("status","Disconnecting from server!");
+      this.disconnect();
     });
   };
 
