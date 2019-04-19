@@ -13,7 +13,7 @@ describe("P2P", () => {
     }
   };
   const server1 = new HobbitsP2PNetwork(ctx);
-  const server2 = new HobbitsP2PNetwork({...ctx, port: 9001, bootnodes: ["172.0.0.1:9000"]});
+  const server2 = new HobbitsP2PNetwork({...ctx, port: 9001, bootnodes: ["127.0.0.1:9000"]});
 
   before(() => {
     server1.start();

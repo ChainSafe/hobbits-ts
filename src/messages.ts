@@ -12,8 +12,8 @@ type requests = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBl
 export interface Hello {
   networkId: number;
   chainId: number;
-  latestFinalized_root: Buffer;
-  latestFinalized_epoch: number;
+  latestFinalizedRoot: Buffer;
+  latestFinalizedEpoch: number;
   bestRoot: Buffer;
   bestSlot: number;
 }

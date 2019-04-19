@@ -25,15 +25,14 @@ export default class Peer extends EventEmitter {
    * Establishes a connection to the peer.
    * @returns {boolean}
    */
-  public connect = (): boolean => {
+  public connect = (): Promise<boolean> => {
     // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
-    try {
-      this.connection = net.createConnection({port: this.port});
-      return true;
-    } catch (e) {
-      console.log(`Error Connecting to static peer: ${this.ip}`);
-      return false;
-    }
+    const that = this;
+    return new Promise((resolve, reject) => {
+      that.connection = net.createConnection({port: this.port});
+      that.connection.on('connect', resolve);
+      that.connection.on('error', reject);
+    })
   };
 
   /**
