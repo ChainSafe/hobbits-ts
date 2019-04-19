@@ -38,9 +38,9 @@ export default class HobbitsP2PNetwork {
    * Connects to static peers
    */
   private connectStaticPeers = async () => {
-    await this.bootnodes.map(async (bootnode: string) => {
-      await this.connect(bootnode);
-    });
+    await Promise.all(this.bootnodes.map((bootnode: string) => {
+      this.connect(bootnode);
+    }));
     console.log(`Connected to ${this.peers.length} static peers`);
   };
 
