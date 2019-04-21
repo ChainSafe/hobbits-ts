@@ -1,5 +1,6 @@
 import net from "net";
 import {EventEmitter} from "events";
+import {Events} from './types';
 
 export interface PeerOpts {
   ip: string;
@@ -28,7 +29,7 @@ export default class Peer extends EventEmitter {
   public connect = (): Promise<boolean> => {
     // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
     const that = this;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       that.connection = net.createConnection({port: this.port});
       that.connection.on('connect', resolve);
       that.connection.on('error', reject);
@@ -38,14 +39,13 @@ export default class Peer extends EventEmitter {
   /**
    * Starts listening for incoming messages from the server
    */
-  public start = () => {
-    this.connection.on('data', (data) => {
-      this.emit("new-data", data.toString());
+  public start = (): void => {
+    this.connection.on('data', (data): void => {
+      this.emit(Events.NewData, data.toString());
       this.connection.end();
     });
 
-    this.connection.on('end', () => {
-      this.emit("status","Disconnecting from server!");
+    this.connection.on('end', (): void => {
       this.disconnect();
     });
   };
@@ -55,6 +55,7 @@ export default class Peer extends EventEmitter {
    * @returns {Promise<void>}
    */
   public disconnect = async (): Promise<void> => {
+    this.emit(Events.Status,"Disconnecting from server!");	  
     await this.connection.destroy()
   };
 }

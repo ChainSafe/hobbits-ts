@@ -6,7 +6,7 @@ export interface RpcBody {
   body: requests;
 }
 
-type requests = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBlockHeaders | BlockHeaders | GetBlockBodies | BlockBodies;
+type request = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBlockHeaders | BlockHeaders | GetBlockBodies | BlockBodies;
 
 // 0x00
 export interface Hello {

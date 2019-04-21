@@ -1,14 +1,14 @@
 import net from "net";
-import {BeaconState} from "./types";
+import {BeaconState, Events} from "./types";
 import * as msgs from "./messages";
-import Peer, {PeerOpts} from "./peer";
+import Peer from "./peer";
 
 export interface HobbitsOpts {
-  port?: number,
-  networkId: number,
-  chainId: number,
-  bootnodes?: string[],
-  state: BeaconState
+  port?: number;
+  networkId: number;
+  chainId: number;
+  bootnodes?: string[];
+  state: BeaconState;
 }
 
 export default class HobbitsP2PNetwork {
@@ -24,7 +24,7 @@ export default class HobbitsP2PNetwork {
    * Constructor
    * @param {HobbitsOpts} opts
    */
-  public constructor(opts: HobbitsOpts) {
+  public constructor(opts: HobbitsOpts): void {
     this.port = opts.port || 9000;
     this.networkId = opts.networkId;
     this.chainId = opts.chainId;
@@ -37,9 +37,9 @@ export default class HobbitsP2PNetwork {
   /**
    * Connects to static peers
    */
-  private connectStaticPeers = async () => {
-    await Promise.all(this.bootnodes.map((bootnode: string) => {
-      this.connect(bootnode);
+  private connectStaticPeers = async (): Promise<void> => {
+    await Promise.all(this.bootnodes.map((bootnode: string): void => {
+      return this.connect(bootnode);
     }));
     console.log(`Connected to ${this.peers.length} static peers`);
   };
@@ -48,7 +48,7 @@ export default class HobbitsP2PNetwork {
    * Connects to a peer
    * @param {string} ip
    */
-  private connect = async (ip: string) => {
+  private connect = async (ip: string): Promise<void> => {
     const peer: Peer = new Peer({
       ip,
       port: this.port
@@ -61,10 +61,10 @@ export default class HobbitsP2PNetwork {
     }
   };
 
-  private listenToPeers = () => {
-    this.peers.map((peer: Peer) => {
+  private listenToPeers = (): Promise<void> => {
+    this.peers.map((peer: Peer): void => {
 
-      peer.on("hello", (data) => {
+      peer.on(Events.Hello, (data): void => {
         console.log(`Parent Received: ${data}`);
       });
 
@@ -76,7 +76,7 @@ export default class HobbitsP2PNetwork {
    * Sends 0x00 message "Hello"
    * @param peer
    */
-  private sendHello = (peer) => {
+  private sendHello = (peer): Promise<void> => {
     const msg: msgs.Hello = {
       networkId: this.networkId,
       chainId: this.chainId,
@@ -86,22 +86,23 @@ export default class HobbitsP2PNetwork {
       bestSlot: this.state.latestFinalizedSlot
     };
     // NOTE: Stubbed -- writin should probably be its own function
-    peer.connection.write(msg);
+    peer.connection.write(JSON.stringify(msg));
   };
 
   /**
    * Starts the server
    */
-  public start = () => {
-    this.server.on("connection", (socket) => {
+  public start = (): Promise<void> => {
+    this.server.on("connection", (connection): void => {
       console.log(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
+      this.peers.push(new Peer({connection}));
     });
 
-    this.server.on("close", () => {
+    this.server.on("close", (): void => {
       console.log("Closing server!");
     });
 
-    this.server.listen(this.port, () => {
+    this.server.listen(this.port, (): void => {
       console.log("Server started!")
     });
 
@@ -114,6 +115,6 @@ export default class HobbitsP2PNetwork {
    */
   public stop = async (): Promise<void> => {
     await this.server.close();
-    await Promise.all(this.peers.map((peer: Peer) => peer.disconnect()));
+    await Promise.all(this.peers.map((peer: Peer): void => peer.disconnect()));
   }
 }

@@ -1,4 +1,8 @@
-import net from "net";
+export enum Events {
+  Status = "STATUS",
+  Hello = "HELLO", 
+  NewData = "NEW_DATA"
+}
 
 export interface BeaconBlockRoot {
   block_root: Buffer;
