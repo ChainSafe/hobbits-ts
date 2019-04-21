@@ -94,9 +94,10 @@ export default class HobbitsP2PNetwork {
    */
   public start = (): void => {
     this.server.on("connection", (connection): void => {
-      console.log(`CONNECTED: ${connection.remoteAddress}:${connection.remotePort}`)
       const peerOpts: PeerOpts = {ip: connection.remoteAddress, port: connection.remotePort};
       this.peers.push(new Peer(peerOpts));
+      console.log(`SERVER :: CONNECTED TO: ${connection.remoteAddress}:${connection.remotePort}`);
+      console.log(`SERVER :: TOTAL PEERS: ${this.peers.length}`);
     });
 
     this.server.on("close", (): void => {
@@ -109,6 +110,14 @@ export default class HobbitsP2PNetwork {
 
     this.connectStaticPeers();
     this.listenToPeers();
+  };
+
+  /**
+   * Get the total number of connected peers
+   * @returns {number}
+   */
+  public getTotalPeers = (): number => {
+    return this.peers.length;
   };
 
   /**
