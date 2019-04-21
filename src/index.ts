@@ -1,7 +1,7 @@
 import net from "net";
 import {BeaconState, Events} from "./types";
 import * as msgs from "./messages";
-import Peer from "./peer";
+import Peer, {PeerOpts} from "./peer";
 
 export interface HobbitsOpts {
   port?: number;
@@ -24,7 +24,7 @@ export default class HobbitsP2PNetwork {
    * Constructor
    * @param {HobbitsOpts} opts
    */
-  public constructor(opts: HobbitsOpts): void {
+  public constructor(opts: HobbitsOpts) {
     this.port = opts.port || 9000;
     this.networkId = opts.networkId;
     this.chainId = opts.chainId;
@@ -38,7 +38,7 @@ export default class HobbitsP2PNetwork {
    * Connects to static peers
    */
   private connectStaticPeers = async (): Promise<void> => {
-    await Promise.all(this.bootnodes.map((bootnode: string): void => {
+  await Promise.all(this.bootnodes.map((bootnode: string): Promise<void> => {
       return this.connect(bootnode);
     }));
     console.log(`Connected to ${this.peers.length} static peers`);
@@ -61,7 +61,7 @@ export default class HobbitsP2PNetwork {
     }
   };
 
-  private listenToPeers = (): Promise<void> => {
+  private listenToPeers = (): void => {
     this.peers.map((peer: Peer): void => {
 
       peer.on(Events.Hello, (data): void => {
@@ -76,7 +76,7 @@ export default class HobbitsP2PNetwork {
    * Sends 0x00 message "Hello"
    * @param peer
    */
-  private sendHello = (peer): Promise<void> => {
+  private sendHello = (peer): void => {
     const msg: msgs.Hello = {
       networkId: this.networkId,
       chainId: this.chainId,
@@ -92,10 +92,11 @@ export default class HobbitsP2PNetwork {
   /**
    * Starts the server
    */
-  public start = (): Promise<void> => {
+  public start = (): void => {
     this.server.on("connection", (connection): void => {
-      console.log(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
-      this.peers.push(new Peer({connection}));
+      console.log(`CONNECTED: ${connection.remoteAddress}:${connection.remotePort}`)
+      const peerOpts: PeerOpts = {ip: connection.remoteAddress, port: connection.remotePort};
+      this.peers.push(new Peer(peerOpts));
     });
 
     this.server.on("close", (): void => {
@@ -115,6 +116,6 @@ export default class HobbitsP2PNetwork {
    */
   public stop = async (): Promise<void> => {
     await this.server.close();
-    await Promise.all(this.peers.map((peer: Peer): void => peer.disconnect()));
+    await Promise.all(this.peers.map((peer: Peer): Promise<void> => peer.disconnect()));
   }
 }

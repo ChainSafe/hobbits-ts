@@ -3,7 +3,7 @@ import {BeaconBlockBody, BeaconBlockHeader, BeaconBlockRoot} from "./types";
 export interface RpcBody {
   method_id: number;
   id: 1;
-  body: requests;
+  body: request;
 }
 
 type request = Hello | Goodbye | GetStatus | GetBlockRoots | BlockRoots | GetBlockHeaders | BlockHeaders | GetBlockBodies | BlockBodies;
