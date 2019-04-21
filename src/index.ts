@@ -12,6 +12,7 @@ export interface HobbitsOpts {
 }
 
 export default class HobbitsP2PNetwork {
+  public running: boolean;
   private port: number;
   private networkId: number;
   private chainId: number;
@@ -32,6 +33,7 @@ export default class HobbitsP2PNetwork {
     this.peers = [];
     this.bootnodes = opts.bootnodes || [];
     this.server = net.createServer();
+    this.running = false;
   }
 
   /**
@@ -41,7 +43,7 @@ export default class HobbitsP2PNetwork {
     await Promise.all(this.bootnodes.map((bootnode: string): Promise<void> => {
       return this.connect(bootnode);
     }));
-    console.log(`Connected to ${this.peers.length} static peers`);
+    // console.log(`Connected to ${this.peers.length} static peers`);
   };
 
   /**
@@ -101,11 +103,13 @@ export default class HobbitsP2PNetwork {
     });
 
     this.server.on("close", (): void => {
-      console.log("Closing server!");
+      // console.log("Closing server!");
+      this.running = false;
     });
 
     this.server.listen(this.port, (): void => {
-      console.log("Server started!")
+      // console.log("Server started!");
+      this.running = true;
     });
 
     this.connectStaticPeers();
