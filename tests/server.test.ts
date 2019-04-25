@@ -1,6 +1,7 @@
 import {assert} from "chai";
 import net from "net";
 import HobbitsP2PNetwork, {HobbitsOpts} from "../src";
+import {delayedConnection} from "./helpers";
 
 describe("Server", () => {
   const ctx: HobbitsOpts = {
@@ -46,19 +47,16 @@ describe("Server", () => {
       // Check the total amount before connecting
       const peersBefore: number = server.getTotalPeers();
       assert.strictEqual(peersBefore, 0, `Expected total count to be 0 but got ${peersBefore}`);
-
-      describe("Connect to server", () => {
-        before(async () => {
-          await net.createConnection({port: 9000});
-        });
-        
-        // Check total connections after the before script runs
-        it("It should have 1 connection", () => {
-          const peersAfter: number = server.getTotalPeers();
-          assert.strictEqual(peersAfter, 1, `Expected total count to be 1 but got ${peersAfter}`);
-        })
-      });
     });
+
+    // Check total connections after the before script runs
+    it("It should have 1 connection", async () => {
+      // Make a connection
+      await delayedConnection(9000);
+
+      // Check peers
+      const peersAfter: number = server.getTotalPeers();
+      assert.strictEqual(peersAfter, 1, `Expected total count to be 1 but got ${peersAfter}`);
+    })
   });
 });
-
