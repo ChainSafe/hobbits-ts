@@ -7,13 +7,25 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src -x .ts -d lib --sourceMap",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint --ext .ts src/",
+    "lint-fix": "eslint --ext .ts src/ --fix",
+    "pretest": "npm run check-types",
+    "test": "nyc -r lcov -e .ts -x \"*.test.ts\" mocha -r ./.babel-register \"tests/**/*.test.ts\" --exit && nyc report",
+    "coverage": "codecov"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChainSafeSystems/hobbits-ts.git"
   },
-  "keywords": ["Ethereum", "Wire Protocol", "Networking", "Testing", "Future"],
+  "keywords": [
+    "Ethereum",
+    "Wire Protocol",
+    "Networking",
+    "Testing",
+    "Future"
+  ],
   "author": "ChainSafe System",
   "license": "Apache 2.0 License",
   "bugs": {
@@ -21,7 +33,25 @@
   },
   "homepage": "https://github.com/ChainSafeSystems/hobbits-ts#readme",
   "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.4.0",
+    "@babel/runtime": "^7.4.2",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.4",
-    "typescript": "^3.3.4000"
-  }
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "chai": "^4.2.0",
+    "codecov": "^3.2.0",
+    "eslint": "^5.16.0",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.1"
+  },
+  "dependencies": {}
 }
