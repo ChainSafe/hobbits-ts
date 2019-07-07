@@ -1,7 +1,9 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import net from "net";
-import HobbitsP2PNetwork, {HobbitsOpts} from "../src";
-import {delayedConnection} from "./helpers";
+import HobbitsP2PNetwork, { HobbitsOpts } from "../src";
+import { delayedConnection } from "./helpers";
+
+const defaultPeerPort = 9000
 
 describe("Server", () => {
   const ctx: HobbitsOpts = {
@@ -13,7 +15,7 @@ describe("Server", () => {
       latestFinalizedSlot: 1
     }
   };
-  // const server2 = new HobbitsP2PNetwork({...ctx, port: 9001, bootnodes: ["127.0.0.1:9000"]});
+  // const server2 = new HobbitsP2PNetwork({...ctx, port: 9001, bootnodes: [`127.0.0.1:${defaultPeerPort}`]});
 
   describe("Startup/Shutdown", async () => {
     const server = new HobbitsP2PNetwork(ctx);
@@ -52,7 +54,7 @@ describe("Server", () => {
     // Check total connections after the before script runs
     it("It should have 1 connection", async () => {
       // Make a connection
-      await delayedConnection(9000);
+      await delayedConnection(defaultPeerPort);
 
       // Check peers
       const peersAfter: number = server.getTotalPeers();
