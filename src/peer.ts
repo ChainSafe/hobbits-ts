@@ -1,6 +1,6 @@
 import net from "net";
-import {EventEmitter} from "events";
-import {Events} from './types';
+import { EventEmitter } from "events";
+import { Events } from './types';
 
 export interface PeerOpts {
   ip: string;
@@ -30,7 +30,7 @@ export default class Peer extends EventEmitter {
     // Attempt to connect to peer, if connection refused remove the peer from bootnodes.
     const that = this;
     return new Promise((resolve, reject): void => {
-      that.connection = net.createConnection({port: this.port});
+      that.connection = net.createConnection({ port: this.port });
       that.connection.on('connect', resolve);
       that.connection.on('error', reject);
     })
@@ -55,7 +55,9 @@ export default class Peer extends EventEmitter {
    * @returns {Promise<void>}
    */
   public disconnect = async (): Promise<void> => {
-    this.emit(Events.Status,"Disconnecting from server!");	  
-    await this.connection.destroy()
+    this.emit(Events.Status, "Disconnecting from server!");
+    if (typeof this.connection !== 'undefined') {
+      await this.connection.destroy()
+    }
   };
 }
