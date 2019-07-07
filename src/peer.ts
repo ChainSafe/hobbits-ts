@@ -56,6 +56,9 @@ export default class Peer extends EventEmitter {
    */
   public disconnect = async (): Promise<void> => {
     this.emit(Events.Status, "Disconnecting from server!");
+
+    // If the remote connection drops before us, 
+    // the Socket object is undefined
     if (typeof this.connection !== 'undefined') {
       await this.connection.destroy()
     }
